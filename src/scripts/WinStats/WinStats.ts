@@ -8,11 +8,14 @@ export class WinStats {
 
     log(winAmount: number, hitCount: number): void {
 
-        if (winAmount < 0 || !isFinite(winAmount) || hitCount <= 0 || !Number.isInteger(hitCount) || !isFinite(hitCount)) {//?
+        if (winAmount < 0 || !isFinite(winAmount) || hitCount <= 0 || !Number.isInteger(hitCount) || !isFinite(hitCount)) {
             console.log(`Error: Wrong values: winAmount:${winAmount}, hitCount:${hitCount}`);
         } else {
             this.dataArr.push([round(winAmount), hitCount]);
         }
+
+        this.sortByWinAmount();
+        this.mergeSameWinAmounts();
     }
 
     getHitCount(winAmount: number): number {
@@ -22,6 +25,16 @@ export class WinStats {
                 return this.dataArr[i][1];
             }
         }
+        return 0;
+
+        // for (let i = 0; i < this.dataArr.length; i++) {
+        //     if (this.dataArr[i].indexOf(winAmount)) {
+        //         return this.dataArr[i][1];
+        //     }
+        // }
+        // return 0;
+
+        // return this.dataArr.find(item => item[0], winAmount);
 
     }
 
