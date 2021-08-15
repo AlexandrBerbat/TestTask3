@@ -19,6 +19,8 @@ export class WinStats {
     }
 
     getHitCount(winAmount: number): number {
+        
+        console.log(this.dataArr);
 
         for (let i = 0; i < this.dataArr.length; i++) {
             if (this.dataArr[i][0] == winAmount) {
@@ -26,15 +28,6 @@ export class WinStats {
             }
         }
         return 0;
-
-        // for (let i = 0; i < this.dataArr.length; i++) {
-        //     if (this.dataArr[i].indexOf(winAmount)) {
-        //         return this.dataArr[i][1];
-        //     }
-        // }
-        // return 0;
-
-        // return this.dataArr.find(item => item[0], winAmount);
 
     }
 
