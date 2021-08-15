@@ -4,66 +4,91 @@ function round(num: number): number {
 
 export class WinStats {
 
-    dataArr: number[][] = [[], []];// 2d arr[ [winAmount, hitCount], ... ]
+    dataArr: number[][] = [];// 2d arr[ [winAmount, hitCount], ... ]
 
     log(winAmount: number, hitCount: number): void {
 
-        if (winAmount < 0 || !isFinite(winAmount) || hitCount < 0 || !Number.isInteger(hitCount) || !isFinite(hitCount)) {//?
+        if (winAmount < 0 || !isFinite(winAmount) || hitCount <= 0 || !Number.isInteger(hitCount) || !isFinite(hitCount)) {//?
             console.log(`Error: Wrong values: winAmount:${winAmount}, hitCount:${hitCount}`);
         } else {
-            this.dataArr[0].push(round(winAmount));
-            this.dataArr[1].push(hitCount);
+            this.dataArr.push([round(winAmount), hitCount]);
         }
     }
 
     getHitCount(winAmount: number): number {
 
-        let indexOfWinAmount: number = this.dataArr[0].indexOf(winAmount);
-
-        return this.dataArr[1][indexOfWinAmount];
+        for (let i = 0; i < this.dataArr.length; i++) {
+            if (this.dataArr[i][0] == winAmount) {
+                return this.dataArr[i][1];
+            }
+        }
 
     }
 
     merge(anotherStat: WinStats): void {
-        for (let i = 0; i < this.dataArr[0].length; i++) {
-            for (let a = 0; a < anotherStat.dataArr[0].length; a++) {
-                if (this.dataArr[0][i] == anotherStat.dataArr[0][a]) {
-                    this.dataArr[1][i] += anotherStat.dataArr[1][a];
+        for (let i = 0; i < this.dataArr.length; i++) {
+            for (let a = 0; a < anotherStat.dataArr.length; a++) {
+                if (this.dataArr[i][0] == anotherStat.dataArr[a][0]) {
+                    this.dataArr[i][1] += anotherStat.dataArr[a][1];
                 }
             }
         }
     }
 
     private sortByWinAmount(): void {
-        this.dataArr[0].sort();
+        this.dataArr.sort((itemA, itemB): number => {
+            return itemA[0] - itemB[0];
+        });
     }
 
 
     private mergeSameWinAmounts(): void {
-        for(let i = 0; i < this.dataArr[0].length; i++)
-        {
-
+        for (let i = 0; i < this.dataArr.length - 1; i++) {
+            // console.log("iter: ", i);
+            // console.log("first: ", this.dataArr[i][0], "next: ", this.dataArr[i + 1][0])
+            if (this.dataArr[i][0] === this.dataArr[i + 1][0]) {
+                this.dataArr[i][1] += this.dataArr[i + 1][1];
+                this.dataArr.splice(i + 1, 1);
+            }
         }
+
     }
 
     print(): void {
-        // console.log(this.dataArr)
+        this.sortByWinAmount();
+        this.mergeSameWinAmounts();
 
-        // for (let a = 0; a < this.dataArr[0].length; a++) {
-        //     console.log(`WinAmount: ${this.dataArr[0][a]} NumberOfWins: ${this.dataArr[1][a]}`)
-        // }
+        let totalWinAmount: number = this.dataArr
+            .map((item) => item[0] * item[1]) //multiply win and counts
+            .reduce((a, b) => a + b);  // sum it up!
 
-        let totalWinAmount: number = 0;
-        let AvgWinAmount: number = 0;
-        let minWin: number = 0;//NOT A ZERO
-        let maxWin: number = 0;
-
-
+        let totalHitCount: number = this.dataArr
+            .map((item) => item[1]) // select only hitCounts
+            .reduce((a, b) => a + b); // summarize
 
 
+        let smallestNonZero = () => {
+            if (this.dataArr[0][0] == 0) { //if the smallest is 0
+                return this.dataArr[1][0];
+            } else {
+                return this.dataArr[0][0];
+            }
+        };
 
+        let biggest = () => {
+            return this.dataArr[this.dataArr.length - 1][0];
+        };
+
+        console.log("Total win amount: ", round(totalWinAmount));
+        console.log("The average win amount: ", round(totalWinAmount / totalHitCount));
+        console.log("The smallest non-zero win is ", smallestNonZero(), ", the biggest is ", biggest());
+
+        console.log("\n\nAll unique wins (sorted 0...9):");
+
+        this.dataArr.forEach((item, index) => {
+            console.log(`${index}. ${item[0]}: ${item[1]}`);
+        })
 
     }
-
 
 }

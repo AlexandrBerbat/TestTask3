@@ -3,14 +3,18 @@ import { WinStats } from "./WinStats/WinStats";
 let winStatsA = new WinStats();
 let winStatsB = new WinStats();
 
-// winStats.print();
+// winStatsA.print();
 
 
 //first stats
 winStatsA.log(0.434, 2);
-winStatsA.log(0.7, 0);
-winStatsA.log(4, 999);
+winStatsA.log(0.434, 2);
+winStatsA.log(0.7, 14);
+winStatsA.log(4, 9);
 winStatsA.log(99.734, 9);
+winStatsA.log(99.734, 9);
+winStatsA.log(4.2, 9);
+winStatsA.log(0, 5);
 
 //second stats
 // winStatsB.log(0.49, 2);
@@ -21,9 +25,9 @@ winStatsA.log(99.734, 9);
 console.log("\n");
 
 
-// console.log("Win exists(0.7): ", winStats.getHitCount(0.7));
-// console.log("Win exists(4): ", winStats.getHitCount(4));
-// console.log("Win does not exist(52): ", winStats.getHitCount(52));
+// console.log("Win exists(0.7): ", winStatsA.getHitCount(0.7));
+// console.log("Win exists(4): ", winStatsA.getHitCount(4));
+// console.log("Win does not exist(52): ", winStatsA.getHitCount(52));
 // console.log("\n");
 
 // winStatsA.merge(winStatsB);
