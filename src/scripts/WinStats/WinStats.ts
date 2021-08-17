@@ -13,17 +13,14 @@ export class WinStats {
         } else {
             this.dataArr.push([round(winAmount), hitCount]);
         }
-
-        this.sortByWinAmount();
-        this.mergeSameWinAmounts();
     }
 
     getHitCount(winAmount: number): number {
-        
-        console.log(this.dataArr);
+
+        // console.log("get hit count: ", this.dataArr);
 
         for (let i = 0; i < this.dataArr.length; i++) {
-            if (this.dataArr[i][0] == winAmount) {
+            if (this.dataArr[i][0] == round(winAmount)) {
                 return this.dataArr[i][1];
             }
         }
@@ -32,13 +29,29 @@ export class WinStats {
     }
 
     merge(anotherStat: WinStats): void {
-        for (let i = 0; i < this.dataArr.length; i++) {
-            for (let a = 0; a < anotherStat.dataArr.length; a++) {
-                if (this.dataArr[i][0] == anotherStat.dataArr[a][0]) {
-                    this.dataArr[i][1] += anotherStat.dataArr[a][1];
+
+        let noSuchElem: number = 0;//как много циклов прошло без обьединения элементов (все за итерацию, значит такого элемента нет и его надо добавить из anotherArr)
+
+        for (let i = 0; i < anotherStat.dataArr.length; i++) {
+
+            for (let a = 0; a < this.dataArr.length; a++) {
+                if (this.dataArr[a][0] == anotherStat.dataArr[i][0]) {
+                    this.dataArr[a][1] += anotherStat.dataArr[i][1]
+                }
+                else {
+                    noSuchElem++;
                 }
             }
+
+            if (noSuchElem == this.dataArr.length) {
+                this.dataArr.push(anotherStat.dataArr[i]);
+            }
+            noSuchElem = 0;
         }
+
+        // this.sortByWinAmount();
+        // this.mergeSameWinAmounts();
+        // console.log("merge: ", this.dataArr);
     }
 
     private sortByWinAmount(): void {
@@ -87,7 +100,7 @@ export class WinStats {
 
         console.log("Total win amount: ", round(totalWinAmount));
         console.log("The average win amount: ", round(totalWinAmount / totalHitCount));
-        console.log("The smallest non-zero win is ", smallestNonZero(), ", the biggest is ", biggest());
+        console.log("The smallest non-zero win is", smallestNonZero(), ", the biggest is ", biggest());
 
         console.log("\n\nAll unique wins (sorted 0...9):");
 
