@@ -17,41 +17,63 @@ export class WinStats {
 
     getHitCount(winAmount: number): number {
 
-        // console.log("get hit count: ", this.dataArr);
+        // for (let i = 0; i < this.dataArr.length; i++) {
+        //     if (this.dataArr[i][0] == round(winAmount)) {
+        //         return this.dataArr[i][1];
+        //     }
+        // }
+        // return 0;
 
-        for (let i = 0; i < this.dataArr.length; i++) {
-            if (this.dataArr[i][0] == round(winAmount)) {
-                return this.dataArr[i][1];
-            }
+
+        let searchingIndex: number = this.dataArr.findIndex(arr => arr[0] == round(winAmount));
+
+        if (searchingIndex !== -1) {
+            return this.dataArr[searchingIndex][1];
+        } else {
+            return 0;
         }
-        return 0;
+
+
 
     }
 
     merge(anotherStat: WinStats): void {
 
-        let noSuchElem: number = 0;//как много циклов прошло без обьединения элементов (все за итерацию, значит такого элемента нет и его надо добавить из anotherArr)
+        // let noSuchElem: number = 0;//как много циклов прошло без обьединения элементов (все за итерацию, значит такого элемента нет и его надо добавить из anotherArr)
+        // for (let i = 0; i < anotherStat.dataArr.length; i++) {
 
-        for (let i = 0; i < anotherStat.dataArr.length; i++) {
+        //     for (let a = 0; a < this.dataArr.length; a++) {
+        //         if (this.dataArr[a][0] == anotherStat.dataArr[i][0]) {
+        //             this.dataArr[a][1] += anotherStat.dataArr[i][1]
+        //         }
+        //         else {
+        //             noSuchElem++;
+        //         }
+        //     }
+        //     if (noSuchElem == this.dataArr.length) {
+        //         this.dataArr.push(anotherStat.dataArr[i]);
+        //     }
+        //     noSuchElem = 0;
+        // }
 
-            for (let a = 0; a < this.dataArr.length; a++) {
-                if (this.dataArr[a][0] == anotherStat.dataArr[i][0]) {
-                    this.dataArr[a][1] += anotherStat.dataArr[i][1]
-                }
-                else {
-                    noSuchElem++;
-                }
+
+        anotherStat.dataArr.forEach((item, index) => {
+
+            let searchingIndex = this.dataArr.findIndex(arr => arr[0] == item[0])
+            if (searchingIndex !== -1) {
+                this.dataArr[searchingIndex][1] += anotherStat.dataArr[index][1];
+            }else {
+                this.dataArr.push(item);
             }
+    
+        });
 
-            if (noSuchElem == this.dataArr.length) {
-                this.dataArr.push(anotherStat.dataArr[i]);
-            }
-            noSuchElem = 0;
-        }
 
-        // this.sortByWinAmount();
-        // this.mergeSameWinAmounts();
-        // console.log("merge: ", this.dataArr);
+
+
+
+
+
     }
 
     private sortByWinAmount(): void {
