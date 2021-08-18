@@ -17,14 +17,6 @@ export class WinStats {
 
     getHitCount(winAmount: number): number {
 
-        // for (let i = 0; i < this.dataArr.length; i++) {
-        //     if (this.dataArr[i][0] == round(winAmount)) {
-        //         return this.dataArr[i][1];
-        //     }
-        // }
-        // return 0;
-
-
         let searchingIndex: number = this.dataArr.findIndex(arr => arr[0] == round(winAmount));
 
         if (searchingIndex !== -1) {
@@ -33,46 +25,20 @@ export class WinStats {
             return 0;
         }
 
-
-
     }
 
     merge(anotherStat: WinStats): void {
-
-        // let noSuchElem: number = 0;//как много циклов прошло без обьединения элементов (все за итерацию, значит такого элемента нет и его надо добавить из anotherArr)
-        // for (let i = 0; i < anotherStat.dataArr.length; i++) {
-
-        //     for (let a = 0; a < this.dataArr.length; a++) {
-        //         if (this.dataArr[a][0] == anotherStat.dataArr[i][0]) {
-        //             this.dataArr[a][1] += anotherStat.dataArr[i][1]
-        //         }
-        //         else {
-        //             noSuchElem++;
-        //         }
-        //     }
-        //     if (noSuchElem == this.dataArr.length) {
-        //         this.dataArr.push(anotherStat.dataArr[i]);
-        //     }
-        //     noSuchElem = 0;
-        // }
-
 
         anotherStat.dataArr.forEach((item, index) => {
 
             let searchingIndex = this.dataArr.findIndex(arr => arr[0] == item[0])
             if (searchingIndex !== -1) {
                 this.dataArr[searchingIndex][1] += anotherStat.dataArr[index][1];
-            }else {
+            } else {
                 this.dataArr.push(item);
             }
-    
+
         });
-
-
-
-
-
-
 
     }
 
@@ -85,8 +51,7 @@ export class WinStats {
 
     private mergeSameWinAmounts(): void {
         for (let i = 0; i < this.dataArr.length - 1; i++) {
-            // console.log("iter: ", i);
-            // console.log("first: ", this.dataArr[i][0], "next: ", this.dataArr[i + 1][0])
+
             if (this.dataArr[i][0] === this.dataArr[i + 1][0]) {
                 this.dataArr[i][1] += this.dataArr[i + 1][1];
                 this.dataArr.splice(i + 1, 1);
